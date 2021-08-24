@@ -1,19 +1,20 @@
-import Pusher from 'pusher-js';
 import { useEffect } from 'react';
-import { NameProvider, useNameContext } from '../helpers/context/name';
+import { NameProvider } from '../helpers/context/name';
+import PropTypes from 'prop-types';
 export default function MyApp({Component, pageProps}) {
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_KEY, { cluster: 'us3'})
-    useEffect(() => {
-        const channel = pusher.subscribe('chat');
-        channel.bind('message', data => {
-        alert(data);
-        })
-        return () => {
-            pusher.unsubscribe("chat");
-        }}, []);
+  useEffect(() => {
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement.removeChild(jssStyles);
+    }
+  }, []);
   return (
     <div>
         <NameProvider> <Component {...pageProps} /> </NameProvider>
     </div>
   );
 }
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
+};
